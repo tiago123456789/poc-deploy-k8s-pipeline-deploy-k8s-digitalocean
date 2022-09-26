@@ -1,0 +1,38 @@
+apiVersion: "apps/v1"
+kind: Deployment
+metadata:
+  name: app-node-deployment
+  labels:
+    app: app-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-node
+  template:
+    metadata:
+      labels:
+        app: app-node
+    spec:
+      containers:
+        - name: app-node-simple-app-k8s
+          image: <IMAGE>
+          # registry.digitalocean.com/app-node-simple/simple-app:latest
+          ports:
+            - containerPort: 3000
+
+--- 
+
+apiVersion: v1 
+kind: Service
+metadata:
+  name: app-node-service
+spec: 
+  selector:
+    app: app-node
+  type: LoadBalancer
+  ports:  
+    - protocol: TCP 
+      port: 80
+      targetPort: 3000
+
